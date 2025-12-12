@@ -1,0 +1,343 @@
+# ======================================
+# 通用入口文件备份（首页、登录、后台）
+# ======================================
+index.php.bak
+index.php.old
+index.php.zip
+index.php.rar
+index.jsp.bak
+index.jsp.old
+index.html.bak
+index.html.old
+default.php.bak
+default.php.old
+home.php.bak
+home.php.old
+main.php.bak
+main.php.old
+login.php.bak
+login.php.old
+admin.php.bak
+admin.php.old
+test.php.bak
+test.php.old
+index.asp.bak
+index.aspx.bak
+default.asp.bak
+default.aspx.bak
+
+# ======================================
+# 整站/目录打包备份（高概率）
+# ======================================
+wwwroot.zip
+wwwroot.rar
+wwwroot.7z
+wwwroot.tar.gz
+wwwroot.tar
+www.zip
+web.zip
+web.rar
+site.zip
+site.rar
+site.tar.gz
+public.zip
+public_html.zip
+public_html.tar.gz
+htdocs.zip
+htdocs.tar.gz
+backup.zip
+backup.rar
+backup.7z
+backup.tar.gz
+backup.tar
+website.zip
+website.tar.gz
+site_backup.zip
+sitebackup.zip
+www_backup.zip
+web_backup.zip
+code_backup.zip
+src_backup.zip
+
+# ======================================
+# 年份/项目命名的整站备份（人工常见）
+# ======================================
+backup_2020.zip
+backup_2021.zip
+backup_2022.zip
+backup_2023.zip
+backup_2024.zip
+backup_2025.zip
+site_2020.zip
+site_2021.zip
+site_2022.zip
+site_2023.zip
+site_2024.zip
+site_2025.zip
+wwwroot_2020.zip
+wwwroot_2021.zip
+wwwroot_2022.zip
+wwwroot_2023.zip
+wwwroot_2024.zip
+project_backup.zip
+project_backup.tar.gz
+release_backup.zip
+release_backup.tar.gz
+
+# ======================================
+# 数据库备份（SQL / 压缩）
+# ======================================
+db.sql
+database.sql
+backup.sql
+mysql.sql
+mysql_backup.sql
+dump.sql
+dump_mysql.sql
+db_backup.sql
+db_backup_2020.sql
+db_backup_2021.sql
+db_backup_2022.sql
+db_backup_2023.sql
+db_backup_2024.sql
+db_backup_2025.sql
+db.sql.gz
+db.tar.gz
+backup.sql.gz
+mysql_backup.sql.gz
+data.sql
+data_backup.sql
+userdata.sql
+user.sql
+users.sql
+admin.sql
+app.sql
+
+# ======================================
+# 配置文件备份（PHP / 框架配置）
+# ======================================
+config.php.bak
+config.php.old
+config.php.save
+config.php~
+config.inc.php.bak
+config.inc.php.old
+config.inc.php~
+config_global.php.bak
+config_global.php.old
+settings.php.bak
+settings.php.old
+settings.php~
+database.php.bak
+database.php.old
+database.php~
+db.config.php.bak
+
+# ======================================
+# 通用配置（ENV / INI / JSON / YAML）
+# ======================================
+php.ini.bak
+php.ini.old
+php.ini~
+.env
+.env.bak
+.env.old
+.env.save
+.env.backup
+.env.local
+.env.local.php
+config.json.bak
+config.json.old
+config.yaml.bak
+config.yaml.old
+config.yml.bak
+config.yml.old
+settings.json.bak
+settings.json.old
+application.properties.bak
+application.yml.bak
+application-dev.yml.bak
+application-prod.yml.bak
+
+# ======================================
+# WordPress 常见备份
+# ======================================
+wp-config.php.bak
+wp-config.php.old
+wp-config.php.save
+wp-config.php~
+wp-admin.zip
+wp-content.zip
+wp-includes.zip
+wordpress.zip
+wordpress.tar.gz
+wp-backup.zip
+wpbackup.zip
+wp_site_backup.zip
+
+# ======================================
+# Discuz!/其他 BBS 常见备份
+# ======================================
+config_global.php.bak
+config_global.php.old
+uc_server.zip
+uc_client.zip
+discuz.zip
+bbs.zip
+bbs_backup.zip
+
+# ======================================
+# ThinkPHP / Laravel / PHP 框架
+# ======================================
+application.zip
+application.tar.gz
+runtime.zip
+runtime.tar.gz
+vendor.zip
+vendor.tar.gz
+thinkphp.zip
+tp.zip
+tp5.zip
+tp6.zip
+storage.zip
+bootstrap.zip
+composer.json.bak
+composer.lock.bak
+
+# ======================================
+# Java Web / Spring Boot
+# ======================================
+web.xml.bak
+web.xml.old
+web.xml~
+application.properties.bak
+application.properties.old
+application.yml.bak
+application.yml.old
+ROOT.war
+ROOT.war.bak
+ROOT.war.old
+ROOT.zip
+ROOT.tar.gz
+app.war
+app.war.bak
+app.war.old
+
+# ======================================
+# Node.js / 前端工程
+# ======================================
+package.json.bak
+package-lock.json.bak
+yarn.lock.bak
+pnpm-lock.yaml.bak
+node_modules.zip
+dist.zip
+build.zip
+app.zip
+frontend.zip
+frontend.tar.gz
+backend.zip
+backend.tar.gz
+
+# ======================================
+# Python Django/Flask 等
+# ======================================
+settings.py.bak
+settings.py.old
+settings.py~
+requirements.txt.bak
+requirements.txt.old
+manage.py.bak
+manage.py~
+
+# ======================================
+# 上传目录/静态资源备份
+# ======================================
+upload.zip
+uploads.zip
+upload.tar.gz
+uploads.tar.gz
+upload.rar
+uploads.rar
+upload_2020.zip
+upload_2021.zip
+upload_2022.zip
+upload_2023.zip
+upload_2024.zip
+static.zip
+assets.zip
+image.zip
+img.zip
+images.zip
+api.zip
+app_backup.zip
+src.zip
+src.tar.gz
+
+# ======================================
+# 编辑器临时文件/自动备份
+# ======================================
+index.php~
+index.php.swp
+index.php.swo
+config.php~
+config.php.swp
+config.php.swo
+login.php~
+admin.php~
+*.tmp
+*.bak
+*.old
+*.save
+
+# ======================================
+# 常见临时/测试/日志文件
+# ======================================
+temp.zip
+tmp.zip
+temp.tar.gz
+tmp.tar.gz
+test.zip
+test.tar.gz
+debug.log
+error.log
+php_errors.log
+app.log
+log.zip
+logs.zip
+
+# ======================================
+# 服务器/Nginx/Apache 配置备份
+# ======================================
+nginx.conf.bak
+nginx.conf.old
+nginx.conf~
+httpd.conf.bak
+httpd.conf.old
+httpd.conf~
+sites-enabled.tar.gz
+vhost.conf.bak
+vhost.conf.old
+
+# ======================================
+# 代码仓库暴露（高危）
+# ======================================
+.git/config
+.git/index
+.git/HEAD
+.git/logs/HEAD
+.svn/entries
+.svn/wc.db
+.hg/hgrc
+.bzr/README
+CVS/Entries
+CVS/Root
+
+# ======================================
+# 其他敏感文件
+# ======================================
+.DS_Store
+Thumbs.db
+.idea/workspace.xml
+.vscode/settings.json
+.vscode/launch.json

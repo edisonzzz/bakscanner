@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>备份文件扫描 & 自动下载工具</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f7;
+        }
+        .container {
+            max-width: 1080px;
+            margin: 30px auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            padding: 24px 28px 32px;
+        }
+        h1 {
+            margin-top: 0;
+            font-size: 24px;
+        }
+        .warning {
+            color: #c00;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+        .field {
+            margin-bottom: 16px;
+        }
+        label {
+            font-weight: 600;
+        }
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            resize: vertical;
+            font-family: monospace;
+            box-sizing: border-box;
+        }
+        input[type="number"], input[type="text"] {
+            padding: 6px 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        .note {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            background: #007aff;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .btn[disabled] {
+            background: #999;
+            cursor: default;
+        }
+        .btn:hover:not([disabled]) {
+            background: #005ecc;
+        }
+        .file-input {
+            margin-top: 8px;
+        }
+        pre {
+            background: #000;
+            color: #0f0;
+            padding: 12px;
+            border-radius: 8px;
+            max-height: 320px;
+            overflow: auto;
+            font-size: 12px;
+            white-space: pre-wrap;
+        }
+        .footer {
+            margin-top: 16px;
+            font-size: 11px;
+            color: #888;
+        }
+        .status-bar {
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+        .progress-outer {
+            width: 100%;
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .progress-inner {
+            height: 10px;
+            width: 0;
+            background: #007aff;
+            transition: width 0.3s;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 6px 8px;
+            text-align: left;
+        }
+        th {
+            background: #f0f0f0;
+        }
+        .tag {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 999px;
+            font-size: 11px;
+            color: #fff;
+        }
+        .tag-pending { background: #999; }
+        .tag-scanning { background: #f0ad4e; }
+        .tag-done { background: #5cb85c; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>备份文件扫描 & 自动下载工具（授权安全测试专用）</h1>
+    <p class="warning">⚠️ 仅用于你拥有或已获授权的站点安全自查，禁止用于未授权目标。</p>
+
+    <form id="scan-form">
+        <!-- 目标 -->
+        <div class="field">
+            <label for="targets_text">目标网站列表</label>
+            <textarea id="targets_text" name="targets_text" placeholder="https://example.com
+test.com
+https://foo.bar:8080"></textarea>
+            <div class="note">每行一个域名或URL，可以直接粘贴；也可以下方上传目标 TXT 文件，二者会合并去重。</div>
+        </div>
+
+        <div class="field">
+            <label>上传目标列表 TXT（可选）</label><br>
+            <input class="file-input" type="file" name="targets_file" id="targets_file" accept=".txt">
+            <div class="note">TXT 每行一个目标，例如：www.xxx.com 或 https://www.xxx.com。</div>
+        </div>
+
+        <!-- 字典 -->
+        <div class="field">
+            <label for="dict_text">自定义字典（备份路径）</label>
+            <textarea id="dict_text" name="dict_text" placeholder="config.php.bak
+wwwroot.zip
+backup/db_backup_2024.sql"></textarea>
+            <div class="note">
+                可在此粘贴路径（每行一个，相对根目录，例如 config.php.bak），也可以上传字典 TXT。
+                若两者都为空，则使用内置默认字典。
+            </div>
+        </div>
+
+        <div class="field">
+            <label>上传字典 TXT（可选）</label><br>
+            <input class="file-input" type="file" name="dict_file" id="dict_file" accept=".txt">
+            <div class="note">TXT 每行一个路径，例如：config.php.bak、backup/site.zip，不要带域名。</div>
+        </div>
+
+        <!-- 线程数 -->
+        <div class="field">
+            <label for="threads">并发线程数</label><br>
+            <input type="number" id="threads" name="threads" value="5" min="1" max="50" style="width: 80px;">
+            <div class="note">建议 3 ~ 10，过高可能打挂目标站或被 WAF 拦截。</div>
+        </div>
+
+        <div class="field">
+            <button type="submit" class="btn" id="start-btn">开始扫描并下载</button>
+        </div>
+    </form>
+
+    <div id="status-block" style="display:none;">
+        <div class="status-bar">
+            <span id="status-text">准备中...</span>
+        </div>
+        <div class="progress-outer">
+            <div class="progress-inner" id="progress-inner"></div>
+        </div>
+
+        <div class="field">
+            <label>单目标扫描状态：</label>
+            <table id="targets-table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>目标</th>
+                    <th>状态</th>
+                    <th>发现备份数</th>
+                </tr>
+                </thead>
+                <tbody id="targets-body">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="field">
+            <label>扫描日志：</label>
+            <pre id="log-output"></pre>
+            <div class="note">
+                备份文件会保存到后端程序所在目录下的 <code>downloads/</code> 子目录中，按域名分目录存放。
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        后端：Flask + requests · 前端：简单轮询进度 · 合法授权前提下使用。
+    </div>
+</div>
+
+<script>
+    let currentTaskId = null;
+    let progressTimer = null;
+
+    const form = document.getElementById('scan-form');
+    const startBtn = document.getElementById('start-btn');
+    const statusBlock = document.getElementById('status-block');
+    const statusText = document.getElementById('status-text');
+    const progressInner = document.getElementById('progress-inner');
+    const logOutput = document.getElementById('log-output');
+    const targetsBody = document.getElementById('targets-body');
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        if (progressTimer) {
+            clearInterval(progressTimer);
+            progressTimer = null;
+        }
+        currentTaskId = null;
+        logOutput.textContent = '';
+        targetsBody.innerHTML = '';
+        progressInner.style.width = '0%';
+        statusText.textContent = '正在提交任务...';
+        statusBlock.style.display = 'block';
+
+        startBtn.disabled = true;
+
+        const formData = new FormData(form);
+
+        fetch('/start', {
+            method: 'POST',
+            body: formData
+        }).then(resp => resp.json())
+          .then(data => {
+              if (data.error) {
+                  alert(data.error);
+                  startBtn.disabled = false;
+                  statusBlock.style.display = 'none';
+                  return;
+              }
+              currentTaskId = data.task_id;
+              statusText.textContent = '任务已启动，正在扫描...';
+              // 每秒拉一次进度
+              progressTimer = setInterval(fetchProgress, 1000);
+          })
+          .catch(err => {
+              console.error(err);
+              alert('启动任务失败：' + err);
+              startBtn.disabled = false;
+              statusBlock.style.display = 'none';
+          });
+    });
+
+    function fetchProgress() {
+        if (!currentTaskId) {
+            return;
+        }
+        fetch('/progress/' + currentTaskId)
+            .then(resp => resp.json())
+            .then(data => {
+                if (data.error) {
+                    console.error(data.error);
+                    return;
+                }
+
+                // 更新日志
+                if (Array.isArray(data.logs)) {
+                    logOutput.textContent = data.logs.join('\n');
+                    logOutput.scrollTop = logOutput.scrollHeight;
+                }
+
+                // 更新表格
+                if (Array.isArray(data.targets)) {
+                    targetsBody.innerHTML = '';
+                    data.targets.forEach((t, idx) => {
+                        const tr = document.createElement('tr');
+
+                        const tdIdx = document.createElement('td');
+                        tdIdx.textContent = idx + 1;
+                        tr.appendChild(tdIdx);
+
+                        const tdName = document.createElement('td');
+                        tdName.textContent = t.name;
+                        tr.appendChild(tdName);
+
+                        const tdStatus = document.createElement('td');
+                        const span = document.createElement('span');
+                        span.classList.add('tag');
+                        if (t.status === 'pending') {
+                            span.classList.add('tag-pending');
+                            span.textContent = '排队中';
+                        } else if (t.status === 'scanning') {
+                            span.classList.add('tag-scanning');
+                            span.textContent = '扫描中';
+                        } else if (t.status === 'done') {
+                            span.classList.add('tag-done');
+                            span.textContent = '完成';
+                        } else {
+                            span.classList.add('tag-pending');
+                            span.textContent = t.status || '未知';
+                        }
+                        tdStatus.appendChild(span);
+                        tr.appendChild(tdStatus);
+
+                        const tdFound = document.createElement('td');
+                        tdFound.textContent = t.found || 0;
+                        tr.appendChild(tdFound);
+
+                        targetsBody.appendChild(tr);
+                    });
+                }
+
+                // 更新总进度
+                const total = data.total_targets || 1;
+                const finished = data.finished_targets || 0;
+                const percent = Math.round(finished / total * 100);
+                progressInner.style.width = percent + '%';
+                statusText.textContent = `总体进度：${finished}/${total} (${percent}%)`;
+
+                // 完成时停止轮询
+                if (data.done) {
+                    if (progressTimer) {
+                        clearInterval(progressTimer);
+                        progressTimer = null;
+                    }
+                    statusText.textContent = `扫描完成：${finished}/${total} (${percent}%)`;
+                    startBtn.disabled = false;
+                }
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }
+</script>
+</body>
+</html>
